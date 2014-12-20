@@ -2,8 +2,14 @@
 #include "Timer.h"
 //width
 const unsigned char w=4;
+const unsigned char switchI=0;
+const unsigned char switchJ=0;
+const unsigned char locateN=3;
+const unsigned char locateI[locateN]={0,w-1,w-1};
+const unsigned char locateJ[locateN]={w-1,0,w-1};
+
 const unsigned char switchPin=47;
-const unsigned char LEDS[w][w]={{switchPin,2,6,10},{46,3,7,11},{45,4,8,12},{44,5,9,13}};
+const unsigned char LED[w][w]={{switchPin,2,6,10},{46,3,7,11},{45,4,8,12},{44,5,9,13}};
 
 const unsigned char maxDigit=8;
 int digit2light[maxDigit]={0,1,2,3,5,8,13,21};
@@ -71,7 +77,7 @@ void setDigit(unsigned char line,unsigned char row,unsigned int digit){
   Serial.print(" ");
   Serial.println(digit);
   digits[line][row]=digit;
-  unsigned char pin=LEDS[line][row];
+  unsigned char pin=LED[line][row];
   unsigned char light=digit2light[digit];
   if(pin==switchPin)
     digitalWrite(pin,light);

@@ -18,8 +18,9 @@ stat								// switch between status locate and transfer
 
 digits[w][w]						// digit represented by LED[i][j]
 
-const locateI[3]={0,3,3}			// positions of locateLEDs in lattice:[0][3],[3][0],[3][3]
-const locateJ[3]={3,0,3}
+const loacteN=3;
+const locateI[loacteN]={0,w-1,w-1}	// positions of locateLEDs in lattice:[0][3],[3][0],[3][3]
+const locateJ[loacteN]={w-1,0,w-1}
 const switchI = 0					// position of switchLED in lattice :[0][0]
 const switchJ = 0	
 
