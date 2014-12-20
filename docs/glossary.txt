@@ -1,0 +1,34 @@
+common concepts:
+================================================================================================================================================
+lattice						// lattice of LEDs including other modules related with arduino;
+LED[i][j]					// LED with position of line i and row j; 
+status={locate,transfer}	// two statuses of this system, one for locate the position of lattice, one for transfer data 
+locateLED[3]				// three LEDS twinkle int the status of locate for phone to locate the lattice;
+switchLED					// one LED represents two frames switching in the status of locate;
+
+common variables:
+================================================================================================================================================
+const w = 4;						// the width of lattice
+const maxDigit = 8					// maximum value each LED could represent;
+enum status = {locate,transfer}		
+line 								// line number, range within [0,w)
+row									// row number, range within [0,w)
+digit								// represents data to transfer, range within [0,maxDigit)
+stat								// switch between status locate and transfer
+
+digits[w][w]						// digit represented by LED[i][j]
+
+const locateI[3]={0,3,3}			// positions of locateLEDs in lattice:[0][3],[3][0],[3][3]
+const locateJ[3]={3,0,3}
+const switchI = 0					// position of switchLED in lattice :[0][0]
+const switchJ = 0	
+
+arduino:
+================================================================================================================================================
+const switchPin=47	// the pin value of switchLED
+const locatePin[3]	// the pin values of locateLED
+
+android:
+================================================================================================================================================
+switchX 			// position of switchLED on screen
+switchY
