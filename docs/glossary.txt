@@ -2,21 +2,27 @@ common concepts:
 ================================================================================================================================================
 lattice						// lattice of LEDs including other modules related with arduino;
 LED[i][j]					// LED with position of line i and row j; 
-status={locate,transfer}	// two statuses of this system, one for locate the position of lattice, one for transfer data 
+status = {					// two statuses of pharos,
+	locate,					// ----"locate" for a phone locate the position of lattice,
+	transfer,				// ----"tansfer" for transfer data 
+}
+mode = {					// three modes of pharos, 
+	interact,				// ----"interact" for a single phone to locate the lattice ,flash to tell lattice starting and read the information interactively.
+	cycle,					// ----"cycle" for arduino send information cyclically, any phone could join the loop at any time waiting for next period. 
+	test,	 				// ----"test" to test whether a phone can distinguish the different information represented by one LED
+	rest,					// ----"rest" represents closed
+}
 locateLED[3]				// three LEDS twinkle int the status of locate for phone to locate the lattice;
 switchLED					// one LED represents two frames switching in the status of locate;
+FPS							// a phone usually can take 60 pictures per second
 
-common variables:
+common constants:
 ================================================================================================================================================
-const w = 4;						// the width of lattice
+const w = 4							// the width of lattice;
 const maxDigit = 8					// maximum value each LED could represent;
-enum status = {locate,transfer}		
-line 								// line number, range within [0,w)
-row									// row number, range within [0,w)
-digit								// represents data to transfer, range within [0,maxDigit)
-stat								// switch between status locate and transfer
-
-digits[w][w]						// digit represented by LED[i][j]
+enum status = {loc,trans}			// transfer might be reserved word;
+const cameraFPS=2;					// 2 for test, real value should be 60
+const framePeriod = 1000/cameraFPS	// 500 for test, real value should be 17
 
 const loacteN=3;
 const locateI[loacteN]={0,w-1,w-1}	// positions of locateLEDs in lattice:[0][3],[3][0],[3][3]
@@ -24,12 +30,26 @@ const locateJ[loacteN]={w-1,0,w-1}
 const switchI = 0					// position of switchLED in lattice :[0][0]
 const switchJ = 0	
 
+common variables:
+================================================================================================================================================
+line 								// line number, range within [0,w)
+row									// row number, range within [0,w)
+digit								// represents data to transfer, range within [0,maxDigit)
+stat = loc							// initially be loc, auto-switch between status locate and transfer
+mod = interact						// initially be interact, switched by buttons on the lattice
+digits[w][w]						// digit represented by LED[i][j]
+timer								
+
 arduino:
 ================================================================================================================================================
-const switchPin=47	// the pin value of switchLED
-const locatePin[3]	// the pin values of locateLED
+const LEDPin[w][w]={{47,2,6,10},{46,3,7,11},{45,4,8,12},{44,5,9,13}};
+const locatePin[locateN]={ledPin[locateI[0],locateJ[0]],ledPin[locateI[1],locateJ[2]],ledPin[locateI[3],locateJ[3]]};
+const switchPin=LEDPin[switchI,switchJ];
+const digit2light[maxDigit]={0,1,2,3,5,8,13,21}; 	//actual voltage value for each digit
+const transferPeriod = framePeriod+1; 				//to make sure phone can capture each frame arduino sends
 
 android:
 ================================================================================================================================================
+for example:
 switchX 			// position of switchLED on screen
 switchY
