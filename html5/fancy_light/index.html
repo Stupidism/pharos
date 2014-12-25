@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="appframework/af.ui.css"></link>
     <script type="text/javascript" charset="utf-8" src="appframework/appframework.ui.min.js"></script>
     
-    <link rel="stylesheet" type="text/css" href="css/main.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/main.css?22222"></link>
     <script src='xhr.js'></script>
     <script src="http://ec2-50-17-69-205.compute-1.amazonaws.com:5238/socket.io/socket.io.js"></script>
 <script src="http://debug-software.intel.com/target/target-script-min.js#q06kCQlj1yx1IIsLQxjhFw7slPCHjWqCsVPob1jBXw4"></script>
@@ -25,15 +25,12 @@
         <div id="content">
             <div id="main" style="width:100%;" title="Fancy Light" class="panel" data-footer="none" selected="true">
                 <div class="select" >
-                    <label for="videoSource">Video source: </label>
+                    <label id="status">locating...</label>
                     <select id="videoSource"></select>
                 </div>
-                <label id="status">locating...</label>
                 <div id="videos_div">
-                    <div id="mask_div" class="video_bdr" style="display:none;">
-                        <div style="position: absolute;width: 48px;height: 48px;top: 50%;left: 50%;
-                            border-width: 1px;border-color: white;border-style: solid;margin: -24px 0 0 -24px;" >
-                        </div>
+                    <div id="mask_div" class="video_bdr" style="position:absolute;">
+                        <label id="fps" style="height: 30px;">fps:XXX</label>
                     </div>
                     <canvas id=curCanvas></canvas>
                     <video id="cameraVideo"  width="100%" height="50%" autoplay></video>
@@ -53,5 +50,5 @@
 </body>
 <script type="text/javascript" src="js/morph.js"></script>
 <script type="text/javascript" src="js/pharos.js?222"></script>
-<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/main.js?222222"></script>
 </html>
