@@ -4,15 +4,39 @@ body{
 
 .video_bdr{
     display:block; 
-    border: dashed 1px black;
+}
+
+.led_mask{
+    position:absolute;
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    border-width: 1px;
+    border-color: white;
+    border-style: solid;
+    margin: 0 0 0 0;
+}
+
+#afui.android label#status{
+    hegith:30px;
+    text-align: center;
+    padding: 11px 5px;
+}
+
+#afui.android label#fps{
+    color:#f0f;
+    position:absolute;
+    hegith:30px;
+    text-align: left;
+    padding: 5px 5px;
 }
 
 #videos_div{
     background-color: black;
     text-align:center;
     width:100%;
-    height:75%;
-    margin-top: 10px;
+    height:50%;
     position:relative;
 }
 

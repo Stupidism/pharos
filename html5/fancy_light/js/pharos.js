@@ -17,13 +17,15 @@ var Pharos = function(w,h,line,row){
 	newFrame=null;
 	
     this.colorMap=[];//size w*h
-    
+    console.info(line);
+    console.info(row);
     this.lattice={
         line:line,
         row:row,
         switch:0,
         locateN:3,
         locate:[3,12,15],
+		ledN:line*row,
         led:[
             {left:0,right:w,top:0,bottom:h,light:0,light2digit:[]},
             {left:0,right:w,top:0,bottom:h,light:0,light2digit:[]},
