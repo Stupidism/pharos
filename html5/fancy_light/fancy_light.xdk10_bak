@@ -1,0 +1,33 @@
+{
+  "project": {
+    "projectSettingsVersion": "1.0",
+    "creationData": {
+      "type": "Demo",
+      "src": "https://edge-intel.s3.amazonaws.com/samples/production/sample-webrtc-video-client/sample.zip",
+      "projectGuid": "2c35e002-e393-4c45-90df-46d3d1bb9fb2",
+      "lastModifiedDate": 1405689453200,
+      "creationDate": 1405689453154
+    },
+    "sourceDirectory": "",
+    "startFile": "index.html",
+    "projectFiles": {},
+    "projectDirectories": {},
+    "libraries": [
+      {
+        "name": "Cordova",
+        "version": "2.9.0",
+        "data": {
+          "default": true
+        }
+      },
+      {
+        "name": "intelXDK",
+        "version": "4.0.0",
+        "data": {
+          "default": true
+        }
+      }
+    ],
+    "serviceMethods": []
+  }
+}

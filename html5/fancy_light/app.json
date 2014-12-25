@@ -1,0 +1,17 @@
+{
+	"reponame":"sample-webrtc-video-client",
+	"title":"WebRTC Video Chat Client",
+	"abbr":"WebRTC Video",
+	"tooltip":"[CrossWalk for Android] A sample that leverages WebRTC for video chatting capabilities.",
+	"description":"[CrossWalk for Android] A sample that leverages WebRTC for video chatting capabilities.",
+	"articleurl":"http://software.intel.com/en-us/html5/",
+    "screenshotUrl":"",
+    "iconUrl":"",
+	"highlights":["Crosswalk", "Video Playback"],
+    "keywords":["Crosswalk", "Video Playback"],
+	"visible": "true",
+	"apppreview":"true",
+	"appname":"",
+	"relname":"4.0.0"
+}
+
