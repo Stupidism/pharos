@@ -12,6 +12,9 @@ var newContext;
 
 var pharos;
 
+var maskDiv=$('#mask_div');
+var message=document.getElementById("message");
+
 document.addEventListener('DOMContentLoaded',init);
 
 var text = "test!!!";
@@ -44,9 +47,7 @@ function init(){
     MediaStreamTrack.getSources(gotSources);
     cameraSelector.onchange = listenVideoStream;
     
-    document.getElementById("message").addEventListener('change', function (e) {
-        text = e.target.value;
-    });
+    //maskDiv.show();
 }
 
 var videoSource = null;
@@ -71,10 +72,7 @@ function listenVideoStream(){
     
 }
 
-var lasttime=null;
 var canvasInitialized=null;
-var fps=null;
-var maxFrameTime=1;
 function eachFrame(timestamp) {
     requestAnimationFrame(eachFrame);
     if(canvasInitialized){
@@ -83,10 +81,8 @@ function eachFrame(timestamp) {
         pharos.newFrame=newContext.getImageData(0,0,cw,ch);
         setTimeout(pharos.update(),0);
         curContext.putImageData(pharos.newFrame,0,0);
+        setTimeout(updateText(timestamp),0);
         
-        if(lasttime!==null)
-            curContext.fillText("fps:"+1000/(timestamp-lasttime), 0, 15);
-        lasttime=timestamp;
     }
     else if (camera.videoWidth>0 && camera.videoHeight > 0&&
              camera.offsetWidth>0 && camera.offsetHeight > 0) {
@@ -110,5 +106,15 @@ function eachFrame(timestamp) {
         
         canvasInitialized=true;
     }
+}
+
+var lasttime=null;
+var fps=null;
+var maxFrameTime=1;
+function updateText(timestamp){
+    if(lasttime!==null)
+        curContext.fillText("fps:"+1000/(timestamp-lasttime), 0, 15);
+    lasttime=timestamp;
+    message.innerHTML=pharos.decoder.message.join('');
 }
 

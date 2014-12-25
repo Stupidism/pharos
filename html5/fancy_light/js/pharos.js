@@ -1,9 +1,12 @@
+var book=[".", ",", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
 var color={
     r:0,g:1,b:2,a:3,length:4
-}
+};
 var status={
     nothing:0,loc:1,head:2,trans:3
-}
+};
+
 var Pharos = function(w,h,line,row){
 	this.width=w;
 	this.height=h;
@@ -20,7 +23,7 @@ var Pharos = function(w,h,line,row){
         switch:0,
         locateN:3,
         locate:[3,12,15],
-        led=[{
+        led:[{
             left:0,
             right:w,
             top:0,
@@ -28,18 +31,30 @@ var Pharos = function(w,h,line,row){
             light:0,//size line*row
             light2digit:[]//size [width*height]
         }],
-    }
+    };
     this.decoder={
-        digitBitN:3,
-        mesBitN:6,
+        charBitN:6,
         code:[],
-        idx:0,
-        book:[],
-        message:null,
-    }
-}
+        digitIdx:0,
+        length:0,
+        message:[],
+        pushback:function(data,digitBitN){
+            var digitMask=~(-1<<digitBitN);
+            for(var i=0;i<data.length;i++){
+                this.code.push(data[i]&digitMask);
+            }
+            this.length+=data.length*digitBitN;
+            while(this.length>=this.charBitN){
+                var digit=(this.code[this.digitIdx]<<digitBitN)+this.code[this.digitIdx+1];
+                this.message.push(book[digit]);
+                this.digitIdx+=2;    
+                this.length-=this.charBitN;
+            }
+        }
+    };
+};
 
-
+    
 Pharos.prototype.update=function(){
     var newFrame=this.newFrame;
 	switch(this.stat){
@@ -53,7 +68,7 @@ Pharos.prototype.update=function(){
                 newFrame.data[idx+color.b]=0;
             }
             idx+=color.length;
-        };
+        }
         break;
     }
     case status.loc:{
@@ -64,12 +79,8 @@ Pharos.prototype.update=function(){
     }
     case status.trans:{
         var data=[];
-        this.pushback(data);
+        this.decoder.pushback(data,3);
         break;
     }
-};
-
-Pharos.prototype.pushback=function(data){
-    this.decoder.push(data);
-    console.info()
+    }
 }
