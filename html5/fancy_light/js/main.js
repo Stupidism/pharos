@@ -143,8 +143,8 @@ function updateMask(){
         if(led){
             mask.css("width",led.right-led.left+"px");
             mask.css("height",led.bottom-led.top+"px");
+            mask.css("left",led.left+"px");
             mask.css("top",led.top+"px");
-            mask.css("bottom",led.bottom+"px");
         }
     }
     setTimeout("updateMask()",1000);

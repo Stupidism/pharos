@@ -172,9 +172,9 @@ Pharos.prototype.update=function(){
                     if (i==0) {tem_blue_id = 3;}
                 }
             }            
-            var tem_wid_gap = (tem_y[tem_keyled_id[(tem_blue_id+1)%4]] -
+            var tem_wid_gap = Math.abs(tem_y[tem_keyled_id[(tem_blue_id+1)%4]] -
                                tem_y[tem_keyled_id[tem_blue_id]])>>3;
-            var tem_height_gap = (tem_x[tem_keyled_id[(tem_blue_id+3)%4]] -
+            var tem_height_gap = Math.abs(tem_x[tem_keyled_id[(tem_blue_id+3)%4]] -
                                   tem_x[tem_keyled_id[tem_blue_id]])>>3;
   
             var tem_keyled_x = [];
