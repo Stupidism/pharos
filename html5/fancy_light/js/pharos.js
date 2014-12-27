@@ -91,8 +91,8 @@ Pharos.prototype.update=function(){
         var idx=0;
         var sz=newFrame.width*newFrame.height;
         var tem_widthlen = newFrame.width << 2;
-            console.info(newFrame.width);
-            console.info(newFrame.height);
+       //     console.info(newFrame.width);
+       //     console.info(newFrame.height);
         var tem_led=[];
         var tem_led_num=1;
         for(var i=0;i<sz;i++){
@@ -173,10 +173,10 @@ Pharos.prototype.update=function(){
                     if (i==0) {tem_blue_id = 3;}
                 }
             }            
-            var tem_wid_gap = Math.abs(tem_y[tem_keyled_id[(tem_blue_id+1)%4]] -
-                               tem_y[tem_keyled_id[tem_blue_id]])>>3;
-            var tem_height_gap = Math.abs(tem_x[tem_keyled_id[(tem_blue_id+3)%4]] -
-                                  tem_x[tem_keyled_id[tem_blue_id]])>>3;
+            var tem_wid_gap = Math.floor(Math.abs(tem_y[tem_keyled_id[(tem_blue_id+1)%4]] -
+                               tem_y[tem_keyled_id[tem_blue_id]])/6);
+            var tem_height_gap = Math.floor(Math.abs(tem_x[tem_keyled_id[(tem_blue_id+3)%4]] -
+                                  tem_x[tem_keyled_id[tem_blue_id]])/6);
   
             var tem_keyled_x = [];
             var tem_keyled_y = [];
@@ -209,28 +209,29 @@ Pharos.prototype.update=function(){
         break;
     
     case t_stat.head:
+        
         var tem_blue_stat = 0;
         for (var i=this.lattice.led[0].top;i<=this.lattice.led[0].bottom;++i){
             for (var j=this.lattice.led[0].left;j<=this.lattice.led[0].right;++j){
-                if (newFrame.data[(i*newFrame.width+j)<<2+color.b] > 253){
+                if (newFrame.data[((i*newFrame.width+j)<<2)+color.b] >= 200){
                     tem_blue_stat = 1;   
                 }
             }
         }
-        if (tem_blue_stat == this.lattice.switch){
-            break;   
-        }
-        console.info(this.statheadtime);
+            console.info(tem_blue_stat);
+        if (tem_blue_stat != this.lattice.switch){
+       
+       // console.info(this.statheadtime);
         this.lattice.switch = tem_blue_stat;
         for (var k = 1;k < 16; ++k){
             var tem_sum = 0;
             for (var i=this.lattice.led[k].top;i<=this.lattice.led[k].bottom;++i){
             for (var j=this.lattice.led[k].left;j<=this.lattice.led[k].right;++j){
-                tem_sum += newFrame.data[(i*newFrame.width+j)<<2+color.r];
+                tem_sum += newFrame.data[((i*newFrame.width+j)<<2)+color.r];
             }
         }
             tem_sum = tem_sum / (this.lattice.led[k].bottom - this.lattice.led[k].top) / (this.lattice.led[k].right - this.lattice.led[k].left);
-            for (var i=(tem_sum + this.lattice.led[k].light)>>1,i<=255;++i){
+            for (var i=(tem_sum + this.lattice.led[k].light)>>1;i<=255;++i){
                 this.lattice.led[k].light2digit[i] = this.statheadtime;
             }
             this.lattice.led[k].light = tem_sum;
@@ -238,14 +239,43 @@ Pharos.prototype.update=function(){
         this.statheadtime += 1;
         if (this.statheadtime >= 8){
             this.stat = t_stat.trans;
+            
+            console.info("start trans");
         }
             
-            
+        }   
         
         break;
     case t_stat.trans:{
         var data=[];
-        this.decoder.pushback(data,3);
+        var tem_blue_stat = 0;
+        for (var i=this.lattice.led[0].top;i<=this.lattice.led[0].bottom;++i){
+            for (var j=this.lattice.led[0].left;j<=this.lattice.led[0].right;++j){
+                if (newFrame.data[((i*newFrame.width+j)<<2)+color.b] >= 200){
+                    tem_blue_stat = 1;   
+                }
+            }
+        }
+            //console.info(tem_blue_stat);
+        if (tem_blue_stat != this.lattice.switch){
+            this.lattice.switch = tem_blue_stat;
+            for (var k = 1;k < 16; ++k){
+            var tem_sum = 0;
+            for (var i=this.lattice.led[k].top;i<=this.lattice.led[k].bottom;++i){
+            for (var j=this.lattice.led[k].left;j<=this.lattice.led[k].right;++j){
+                tem_sum += newFrame.data[((i*newFrame.width+j)<<2)+color.r];
+            }
+        }
+            tem_sum = tem_sum / (this.lattice.led[k].bottom - this.lattice.led[k].top) / (this.lattice.led[k].right - this.lattice.led[k].left);
+            var tem_tem = Math.floor(tem_sum);
+                console.info(tem_tem);
+                data[k] = this.lattice.led[k].light2digit[tem_tem];
+                console.info(data[k]);
+        }
+        
+            console.info('run pushback');
+            this.decoder.pushback(data,3);
+        }
         break;
     }
     }

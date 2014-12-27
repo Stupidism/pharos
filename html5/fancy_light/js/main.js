@@ -136,7 +136,7 @@ function createLedMask(){
 }
 
 function updateMask(){
-    console.info("updateMask");
+    //console.info("updateMask");
     for(var i=0;i<pharos.lattice.ledN;i++){
         var mask=$("#led_mask"+i);
         var led=pharos.lattice.led[i];
