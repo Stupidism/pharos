@@ -12,6 +12,7 @@ var Pharos = function(w,h,line,row){
 	this.width=w;
 	this.height=h;
     this.threshold=255;
+    this.statheadtime=0;
     this.stat=t_stat.loc;
     curFrame=null;
 	newFrame=null;
@@ -200,16 +201,48 @@ Pharos.prototype.update=function(){
             }
             this.lattice.switch = 1;
             this.stat = t_stat.head;
-            
+            this.statheadtime = 0;
         }
             
         console.info(tem_led_num);
 //        console.info(tem_led);
         break;
     
-    case t_stat.head:{
+    case t_stat.head:
+        var tem_blue_stat = 0;
+        for (var i=this.lattice.led[0].top;i<=this.lattice.led[0].bottom;++i){
+            for (var j=this.lattice.led[0].left;j<=this.lattice.led[0].right;++j){
+                if (newFrame.data[(i*newFrame.width+j)<<2+color.b] > 253){
+                    tem_blue_stat = 1;   
+                }
+            }
+        }
+        if (tem_blue_stat == this.lattice.switch){
+            break;   
+        }
+        console.info(this.statheadtime);
+        this.lattice.switch = tem_blue_stat;
+        for (var k = 1;k < 16; ++k){
+            var tem_sum = 0;
+            for (var i=this.lattice.led[k].top;i<=this.lattice.led[k].bottom;++i){
+            for (var j=this.lattice.led[k].left;j<=this.lattice.led[k].right;++j){
+                tem_sum += newFrame.data[(i*newFrame.width+j)<<2+color.r];
+            }
+        }
+            tem_sum = tem_sum / (this.lattice.led[k].bottom - this.lattice.led[k].top) / (this.lattice.led[k].right - this.lattice.led[k].left);
+            for (var i=(tem_sum + this.lattice.led[k].light)>>1,i<=255;++i){
+                this.lattice.led[k].light2digit[i] = this.statheadtime;
+            }
+            this.lattice.led[k].light = tem_sum;
+        }
+        this.statheadtime += 1;
+        if (this.statheadtime >= 8){
+            this.stat = t_stat.trans;
+        }
+            
+            
+        
         break;
-    }
     case t_stat.trans:{
         var data=[];
         this.decoder.pushback(data,3);
