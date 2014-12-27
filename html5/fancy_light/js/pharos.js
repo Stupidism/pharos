@@ -13,6 +13,7 @@ var Pharos = function(w,h,line,row){
 	this.height=h;
     this.threshold=255;
     this.statheadtime=0;
+    this.area=0;
     this.stat=t_stat.loc;
     curFrame=null;
 	newFrame=null;
@@ -177,7 +178,7 @@ Pharos.prototype.update=function(){
                                tem_y[tem_keyled_id[tem_blue_id]])/6);
             var tem_height_gap = Math.floor(Math.abs(tem_x[tem_keyled_id[(tem_blue_id+3)%4]] -
                                   tem_x[tem_keyled_id[tem_blue_id]])/6);
-  
+            this.area = tem_wid_gap * tem_height_gap * 4;
             var tem_keyled_x = [];
             var tem_keyled_y = [];
             for (var i=0;i<4;++i)
@@ -220,18 +221,29 @@ Pharos.prototype.update=function(){
         }
             console.info(tem_blue_stat);
         if (tem_blue_stat != this.lattice.switch){
-       
+            
        // console.info(this.statheadtime);
         this.lattice.switch = tem_blue_stat;
         for (var k = 1;k < 16; ++k){
             var tem_sum = 0;
             for (var i=this.lattice.led[k].top;i<=this.lattice.led[k].bottom;++i){
             for (var j=this.lattice.led[k].left;j<=this.lattice.led[k].right;++j){
-                tem_sum += newFrame.data[((i*newFrame.width+j)<<2)+color.r];
+//                if (newFrame.data[((i*newFrame.width+j)<<2)+color.r] > 140){
+//                    tem_sum += 1;   
+//                }
+                if (newFrame.data[((i*newFrame.width+j)<<2)+color.r] > 170){
+                    tem_sum += 1;   
+                }
+                if (newFrame.data[((i*newFrame.width+j)<<2)+color.r] > 200){
+                    tem_sum += 1;   
+                }
+                if (newFrame.data[((i*newFrame.width+j)<<2)+color.r] > 230){
+                    tem_sum += 1;   
+                }
             }
         }
-            tem_sum = tem_sum / (this.lattice.led[k].bottom - this.lattice.led[k].top) / (this.lattice.led[k].right - this.lattice.led[k].left);
-            for (var i=(tem_sum + this.lattice.led[k].light)>>1;i<=255;++i){
+            
+            for (var i=(tem_sum + this.lattice.led[k].light)>>1;i<=3*this.area;++i){
                 this.lattice.led[k].light2digit[i] = this.statheadtime;
             }
             this.lattice.led[k].light = tem_sum;
@@ -240,7 +252,7 @@ Pharos.prototype.update=function(){
         if (this.statheadtime >= 8){
             this.stat = t_stat.trans;
             
-            console.info("start trans");
+            console.info("start trans" + this.area);
         }
             
         }   
@@ -263,18 +275,28 @@ Pharos.prototype.update=function(){
             var tem_sum = 0;
             for (var i=this.lattice.led[k].top;i<=this.lattice.led[k].bottom;++i){
             for (var j=this.lattice.led[k].left;j<=this.lattice.led[k].right;++j){
-                tem_sum += newFrame.data[((i*newFrame.width+j)<<2)+color.r];
+//                if (newFrame.data[((i*newFrame.width+j)<<2)+color.r] > 140){
+//                    tem_sum += 1;   
+//                }
+                if (newFrame.data[((i*newFrame.width+j)<<2)+color.r] > 170){
+                    tem_sum += 1;   
+                }
+                if (newFrame.data[((i*newFrame.width+j)<<2)+color.r] > 200){
+                    tem_sum += 1;   
+                }
+                if (newFrame.data[((i*newFrame.width+j)<<2)+color.r] > 230){
+                    tem_sum += 1;   
+                }
             }
         }
-            tem_sum = tem_sum / (this.lattice.led[k].bottom - this.lattice.led[k].top) / (this.lattice.led[k].right - this.lattice.led[k].left);
-            var tem_tem = Math.floor(tem_sum);
-                console.info(tem_tem);
-                data[k] = this.lattice.led[k].light2digit[tem_tem];
-                console.info(data[k]);
+            
+                console.info(tem_sum);
+                data[k-1] = this.lattice.led[k].light2digit[tem_sum];
+                //console.info(data[k]);
         }
         
             console.info('run pushback');
-            this.decoder.pushback(data,3);
+           console.info(data); this.decoder.pushback(data,3);
         }
         break;
     }
