@@ -1,4 +1,6 @@
 
+    var cw, ch;
+    var line=4,row=4;
 
 var cameraSelector = document.querySelector("select#videoSource");
 var camera = document.getElementById("cameraVideo");
@@ -16,8 +18,6 @@ var message=document.getElementById("message");
 
 document.addEventListener('DOMContentLoaded',function(){
 
-    var cw, ch;
-    var line=4,row=4;
     var text = "test!!!";
     //初始化
     function init(){
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded',function(){
         }
         else if (camera.videoWidth>0 && camera.videoHeight > 0&&
                  camera.offsetWidth>0 && camera.offsetHeight > 0) {
-            console.info([camera.videoWidth , camera.videoHeight,camera.offsetWidth , camera.offsetHeight])
+            //console.info([camera.videoWidth , camera.videoHeight,camera.offsetWidth , camera.offsetHeight])
             var videoRatio = camera.videoWidth / camera.videoHeight;
             var offsetRatio = camera.offsetWidth / camera.offsetHeight;
             
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded',function(){
             curContext.font = "15pt Calibri";
             curContext.fillStyle = "#f0f";
             curContext.fillText("hhh",0,100);
-            pharos=new Pharos(cw,ch,line,row);
+            restart();
 
             createLedMask();
             canvasInitialized=true;
@@ -115,6 +115,12 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 var lasttime=null;
+
+function restart(){
+    console.info("restart");
+    pharos=new Pharos(cw,ch,line,row);
+}
+
 function updateText(timestamp){
     if(lasttime!==null)
         fps.innerHTML="fps:"+1000/(timestamp-lasttime);

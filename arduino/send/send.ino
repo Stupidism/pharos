@@ -3,11 +3,13 @@
 #include "control.h"
 #include "util.h"
 #include <Bounce.h>
+#include "encoder.h"
 #include <stdlib.h>
-
+const String str="guoyanchang,niubility,Hello,World.";
 const unsigned char keyboardSize=4;
 const unsigned char keyPin[keyboardSize]={A7,A6,A5,A4};
-Bounce  bouncer[keyboardSize]; 
+Bounce  bouncer[keyboardSize];
+Encoder encoder(str);
 void setup() {
   pinMode(switchPin,OUTPUT);
   digitalWrite(47,HIGH);
@@ -19,15 +21,14 @@ void setup() {
     bouncer[i].attach(keyPin[i]);
     bouncer[i].interval(20);
   }
-  setMode(test);
+  setMode(cycle);
 }
 
 void loop() {
   if(Serial.available()){
-    line=serReadInt();
-    row=serReadInt();
+    num=serReadInt();
     digit=serReadInt();
-    setDigit(line,row,digit);
+    setDigit1(num,digit);
   }
   //setMode(MMode(readKeyboard()));
   timer.update();
@@ -84,13 +85,61 @@ void testLoop(){
         setDigit(index2.line,index2.row,index2.digit);
       else
         setDigit(random(w),random(w),random(maxDigit));
-      setSwitchDigit();
       (*p_index)++;
     }
   }
+  setSwitchDigit(1,1);
 }
 
-void cycleLoop(){};
+static int cycleLoops=0;
+void cycleLoop(){
+  Serial.print("cycle:");
+  Serial.println(cycleLoops);
+  cycleLoops++;
+  switch(stat){
+  case loc:{
+    const int cycleLocPeriod=5000;
+    static int cycleLocLoops=cycleLocPeriod/transferPeriod;
+    if(--cycleLocLoops<0){
+      cycleLocLoops=cycleLocPeriod/transferPeriod;
+      setStatus(head);
+    }
+    break;
+  }
+  case head:{
+    static int cycleHeadLoops=maxDigit;
+    clearDigits(maxDigit-cycleHeadLoops);
+    setSwitchDigit(1,1);  
+    if(--cycleHeadLoops<=0){
+      cycleHeadLoops=maxDigit;
+      setStatus(trans);
+      return;
+    }
+    break;
+  }
+  case trans:{
+    int len;
+    char * code=encoder.getCode(digitN,len);
+    
+    Serial.print("cycle trans:");
+    for(int i=0;i<len;i++){
+      setDigit1(i+1,code[i]);
+      Serial.print((int)code[i]);
+      Serial.print(" ");
+    }
+    Serial.println("");
+    setSwitchDigit(1,1);
+    if(len<digitN){
+      encoder.init(str);
+      setStatus(loc);
+      cycleLoops=0;
+    }
+    break;
+  }
+  default:
+    return;
+  }
+};
 void interactLoop(){};
 
 

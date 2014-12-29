@@ -24,9 +24,14 @@
 	<div id="afui">
         <div id="content">
             <div id="main" style="width:100%;" title="Fancy Light" class="panel" data-footer="none" selected="true">
-                <div class="select" >
-                    <label id="status">locating...</label>
-                    <select id="videoSource"></select>
+                <div style=width:100%>
+                    <div id="restart_div">
+                        <button id="restart_btn" onclick="restart()">重置</button>
+                    </div>
+                    <div id="selector_div">
+                        <select id="videoSource" align="right"></select>
+                    </div>
+                    <div style="clear: both; border: 0;"></div>
                 </div>
                 <div id="videos_div">
                     <div id="mask_div" class="video_bdr" style="position:absolute;">
@@ -50,5 +55,5 @@
 </body>
 <script type="text/javascript" src="js/morph.js"></script>
 <script type="text/javascript" src="js/pharos.js?4"></script>
-<script type="text/javascript" src="js/main.js?222222"></script>
+<script type="text/javascript" src="js/main.js?2"></script>
 </html>

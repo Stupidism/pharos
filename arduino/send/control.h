@@ -1,7 +1,20 @@
 #include "digit.h"
 void setStatus(MStatus new_stat){
-   clearDigits(0);
-   stat=new_stat;
+  Serial.print("setStatus");
+  Serial.print(" ");
+  Serial.println(new_stat);
+  switch(stat){
+  case loc:
+    setLocateDigit();
+    break;
+  case head:  
+    break;
+  case trans:
+    break;
+  default:
+    return;
+  } 
+  stat=new_stat;
 }
 
 void setMode(MMode new_mod){
@@ -19,6 +32,8 @@ void setMode(MMode new_mod){
   }
   Serial.print("changeMode ");
   Serial.println(new_mod);
+  clearDigits(0);
+  setSwitchDigit(false,false);
   setStatus(loc);
   mod=new_mod;
 }
