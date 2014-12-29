@@ -5,7 +5,7 @@
       "type": "Demo",
       "src": "https://edge-intel.s3.amazonaws.com/samples/production/sample-webrtc-video-client/sample.zip",
       "projectGuid": "2c35e002-e393-4c45-90df-46d3d1bb9fb2",
-      "lastModifiedDate": 1419340602455,
+      "lastModifiedDate": 1419856245540,
       "creationDate": 1405689453154
     },
     "sourceDirectory": "",
@@ -250,7 +250,7 @@
           "android-installLocation": "auto"
         },
         "isActive_": true,
-        "appName_": "fancy_light",
+        "appName_": "fancylight",
         "appID_": "not.yet.specified",
         "appAccess_": "*",
         "icons_": [],
@@ -273,7 +273,7 @@
           "android-installLocation": "auto"
         },
         "isActive_": true,
-        "appName_": "fancy_light",
+        "appName_": "fancylight",
         "appID_": "not.yet.specified",
         "appAccess_": "*",
         "icons_": [],
